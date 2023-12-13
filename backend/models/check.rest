@@ -1,7 +1,8 @@
-POST http://localhost:3001/api/users
+POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmVrYSIsImlkIjoiNjU3OTc2ZTBiZWQwMTQ1Y2I1NzM4ZjdlIiwiaWF0IjoxNzAyNDY0OTc2fQ.gxOlwN2hjvj1D60zq_T07xEDOq6-HP6wU3i04HioLbU
 
 {
-  "name": "beka lomsadze",
-  "password": "btu"
+  "title": "new note",
+  "date": "2023-12-13T15:00:00.000Z"
 }

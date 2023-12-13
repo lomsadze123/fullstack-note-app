@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import uniqueValidator from "mongoose-unique-validator";
 const { set, connect, Schema, model } = mongoose;
 
 const password = process.argv[2];
@@ -13,11 +14,18 @@ const newSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
-  passwordHash: {
+  password: {
     type: String,
     required: true,
   },
+  notes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Note",
+    },
+  ],
 });
 
 newSchema.set("toJSON", {
@@ -28,8 +36,9 @@ newSchema.set("toJSON", {
   },
 });
 
+newSchema.plugin(uniqueValidator);
 const User = model("User", newSchema);
 
-User.deleteMany({}).then(() => console.log("deleted"));
+// User.deleteMany({}).then(() => console.log("deleted"));
 
 export default User;
