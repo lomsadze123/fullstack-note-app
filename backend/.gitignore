@@ -1,0 +1,16 @@
+# .gitignore
+
+# Ignore package-lock.json file
+package-lock.json
+
+# Ignore the entire node_modules folder
+node_modules/
+
+# Ignore .idea folder and its contents
+.idea/
+
+# Ignore all files inside the images folder
+images/*
+
+# Exception: Include the .gitkeep file inside the images folder
+!images/.gitkeep
