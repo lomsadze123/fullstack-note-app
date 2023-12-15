@@ -1,6 +1,8 @@
 # Full-Stack Note App
 
-A simple full-stack note-taking application with user authentication and authorization which includes tokens and password hashing with bcrypt.
+A simple full-stack note-taking application with user authentication and authorization which includes tokens and password hashing with bcrypt. The app is built using a MERN stack (MongoDB, Express.js, React, Node.js), with user authentication handled using JWT tokens.
+
+https://github.com/lomsadze123/fullstack-note-app/assets/91826108/d448ccbc-01ac-4d0b-92fe-d4ac0d218080
 
 ## Setup
 
