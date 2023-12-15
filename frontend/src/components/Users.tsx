@@ -19,6 +19,37 @@ const Users = () => {
   const [error, setError] = useState("");
   const [store, setStore] = useState("");
 
+  const handleUserCreate = async () => {
+    try {
+      await axios.post("http://localhost:3001/api/users", {
+        name: value.name,
+        password: value.password,
+      });
+    } catch (error) {
+      console.log(error);
+      setError("failed");
+    }
+  };
+
+  const handleUserLogIn = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/api/login", {
+        name: value.name,
+        password: value.password,
+      });
+
+      localStorage.setItem("token", response.data.token);
+
+      if (response.status === 200) {
+        setError("success");
+        setPopup(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setError("failed");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -29,36 +60,26 @@ const Users = () => {
 
       try {
         if (submitted.up) {
-          await axios.post("http://localhost:3001/api/users", {
-            name: value.name,
-            password: value.password,
-          });
+          await handleUserCreate();
         } else if (submitted.in) {
-          const response = await axios.post("http://localhost:3001/api/login", {
-            name: value.name,
-            password: value.password,
-          });
-
-          localStorage.setItem("token", response.data.token);
-
-          if (response.status === 200) {
-            setError("success");
-            setPopup(false);
-          }
+          await handleUserLogIn();
         }
       } catch (error) {
-        console.log(error);
         setError("failed");
       }
     }
   };
 
   const handleDelete = async () => {
-    axios.delete(`http://localhost:3001/api/users/${users?.id}`);
-    axios.delete(`http://localhost:3001/api/notes`);
-    setUsers({ name: "", password: "" });
-    localStorage.removeItem("token");
-    setStore("");
+    try {
+      await axios.delete(`http://localhost:3001/api/users/${users?.id}`);
+      await axios.delete(`http://localhost:3001/api/notes`);
+      setUsers({ name: "", password: "" });
+      localStorage.removeItem("token");
+      setStore("");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
   useEffect(() => {

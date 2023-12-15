@@ -5,26 +5,39 @@ import bcrypt from "bcrypt";
 const router = express.Router();
 
 router.get("/", async (request, response) => {
-  const user = await User.find({}).populate("notes", { title: 1, date: 1 });
-  response.send(user);
+  try {
+    const users = await User.find({}).populate("notes", { title: 1, date: 1 });
+    response.send(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
 });
 
 router.delete("/:id", async (request, response) => {
-  const user = await User.findByIdAndDelete(request.params.id);
-  response.send(user);
-  console.log("deleted successfully");
+  try {
+    const user = await User.findByIdAndDelete(request.params.id);
+    if (!user) {
+      return response.status(404).json({ error: "User not found" });
+    }
+    response.send(user);
+    console.log("User deleted successfully");
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
 });
 
 router.post("/", async (request, response) => {
-  const saltRounds = 10;
-  const password = await bcrypt.hash(request.body.password, saltRounds);
-
-  const user = new User({
-    name: request.body.name,
-    password: password,
-  });
-
   try {
+    const saltRounds = 10;
+    const password = await bcrypt.hash(request.body.password, saltRounds);
+
+    const user = new User({
+      name: request.body.name,
+      password: password,
+    });
+
     await user.save();
     response.status(201).send(user);
     console.log("user saved successfully");

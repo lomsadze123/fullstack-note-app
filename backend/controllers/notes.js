@@ -14,25 +14,34 @@ const getTokenFrom = (request) => {
 };
 
 NoteRouter.get("/", async (request, response) => {
-  const note = await Note.find({});
-  response.send(note);
+  try {
+    const notes = await Note.find({});
+    response.send(notes);
+  } catch (error) {
+    console.error("Error fetching notes:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
 });
 
 NoteRouter.delete("/", async (request, response) => {
-  const note = await Note.deleteMany({});
-  response.send(note);
-  console.log("note deleted successfully");
+  try {
+    const result = await Note.deleteMany({});
+    console.log("Notes deleted successfully");
+    response.send(result);
+  } catch (error) {
+    console.error("Error deleting notes:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
 });
 
-NoteRouter.get("/:id", (request, response) => {
-  Note.findById(request.params.id)
-    .then((item) => {
-      response.send(item);
-    })
-    .catch((err) => {
-      console.log(err);
-      response.status(500).send("Internal Server Error");
-    });
+NoteRouter.get("/:id", async (request, response) => {
+  try {
+    const note = await Note.findById(request.params.id);
+    response.send(note);
+  } catch (error) {
+    console.error("Error deleting notes:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
 });
 
 NoteRouter.post("/", async (request, response, next) => {

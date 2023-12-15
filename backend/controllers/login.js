@@ -8,12 +8,19 @@ loginRouter.post("/", async (request, response) => {
   const { name, password } = request.body;
 
   const user = await User.findOne({ name });
-  const passwordCorrect =
-    user === null ? false : await compare(password, user.password);
+  try {
+    const passwordCorrect =
+      user === null ? false : await compare(password, user.password);
 
-  if (!(user && passwordCorrect)) {
-    return response.status(401).json({
-      error: "invalid name or password",
+    if (!(user && passwordCorrect)) {
+      return response.status(401).json({
+        error: "invalid name or password",
+      });
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    response.status(500).json({
+      error: "Internal server error",
     });
   }
 
@@ -22,7 +29,7 @@ loginRouter.post("/", async (request, response) => {
     id: user.id,
   };
 
-  const token = jwt.sign(userForToken, "beka"); // beka is secret
+  const token = jwt.sign(userForToken, "beka", { expiresIn: 60 * 60 }); // beka is secret
 
   response.status(200).send({ token, name: user.name });
 });
