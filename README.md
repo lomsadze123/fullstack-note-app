@@ -4,6 +4,16 @@ A simple full-stack note-taking application with user authentication and authori
 
 https://github.com/lomsadze123/fullstack-note-app/assets/91826108/d448ccbc-01ac-4d0b-92fe-d4ac0d218080
 
+## API Endpoints
+
+POST /api/users: Create a new user account.
+POST /api/login: Authenticate and generate a JWT token.
+GET /api/users: Get a list of users (for development purposes).
+GET /api/notes: Get a list of notes for the authenticated user.
+POST /api/notes: Create a new note for the authenticated user.
+GET /api/notes/:id: Get details of a specific note.
+DELETE /api/notes/:id: Delete a specific note.
+
 ## Setup
 
 1. Clone the Repository: Start by cloning the repository to your local machine using the following command:
